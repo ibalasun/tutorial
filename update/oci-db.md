@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Use Identity and Access Management (IAM) Authentication with Autonomous Database. An Oracle Cloud Infrastructure IAM database password allows an IAM user to log in to an Autonomous Database instance as Oracle Database users typically log in with a user name and password. The user enters their IAM user name and IAM database password. An IAM database password is a different password than the Oracle Cloud Infrastructure Console password. Using an IAM user with the password verifier you can login to Autonomous Database with any supported database client. 
+Use Identity and Access Management (IAM) Authentication with Autonomous Database. An Oracle Cloud Infrastructure IAM database password allows an IAM user to log in to an Autonomous Database instance as Oracle Database users typically log in with a user name and password. The user enters their IAM user name and IAM database password. An IAM database password is a different password than the Oracle Cloud Infrastructure Console password. Using an IAM user with the password verifier you can login to Autonomous Database with any supported database client.
 
 
 
@@ -31,7 +31,7 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     Click **Create**
     
-	![Database Create Groups](images/manager-ag-logon.png)
+	![Database Create Groups](images/create-group.png)
 
 2. Navigate to **Identity-> Policy** Click on **Create Policy**. Enter the following details.
 
@@ -45,7 +45,11 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
     
     Click **Create** Policy has been created
 
-    ![Database Create Policy](images/manager-ag-homepage.png)
+    ![Database Create Policy](images/create-policy.png)
+
+    ![Database Create Policy](images/policy-builder.png)
+
+    ![Database Create Policy](images/policy-created.png)
 
 3. Navigate to **Identity-> Users**. Click Create User and enter the following details to create two test users - **testuser1 and testuser2**
 
@@ -56,6 +60,10 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
     * Confirm Email: testuser1@demo.com
 
     Click Create
+
+     ![Database Create Users](images/create-testuser1.png)
+
+      ![Database Create Users](images/dbgroup-testuser1.png)
 
     * Add **testuser1** to **DB_Users group**
 
@@ -71,7 +79,9 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     - Add the **testuser2** to **DB_Admins and DB_Users groups**
 
-  ![Database Create Users](images/manager-ag-homepage.png)
+   ![Database Create Users](images/create-testuser2.png)
+
+    ![Database Create Users](images/dbgroup-testuser2.png)
 
 ## Task 3: Set the IAM Database Password for the Users - testuser1 and testuser2
 
@@ -87,7 +97,9 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
     
     Click **Create database password**
 
-     ![Set IAM Database Password](images/manager-ag-homepage.png)
+     ![Set IAM Database Password](images/dbpassword-testuser1.png)
+
+     ![Set IAM Database Password](images/set-dbpassword-testuser1.png)
 
 4. Select testuser2. The Database username is testuser2 . Now, Select Database Password. Click on **Create Database Password**
 
@@ -101,6 +113,10 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
      ![Set Database IAM Password](images/manager-ag-homepage.png)
 
+     ![Set IAM Database Password](images/dbpassword-testuser2.png)
+
+     ![Set IAM Database Password](images/set-dbpassword-testuser1.png)
+
 
     Now you have succesfully created the database passwords for the testuser1 and testuser2.  
 
@@ -108,12 +124,18 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
 1. In OCI, navigate to **Autonomous Database -> Database Actions -> SQL**. The SQL session is created. 
 
+    ![Navigate Database](images/navigate-adb.png)
+
+    ![Navigate Database](images/sql-session.png)
+
+    
+
 2. Verify the **current External Identity Provider** for Autonomous Database
 
 
     SELECT NAME, VALUE FROM V$PARAMETER WHERE NAME=‘identity_provider_type’;
 
-     ![Verify the External Identity Provider](images/manager-ag-homepage.png)
+     ![Verify the External Identity Provider](images/identity-provider-before.png)
 
     It is currently **None**
 
@@ -121,11 +143,11 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     EXEC DBMS_CLOUD_ADMIN.ENABLE_EXTERNAL_AUTHENTICATION(‘OCI_IAM’);
 
-     ![Set OCI IAM as the Identity Provider](images/manager-ag-homepage.png)
+     ![Set OCI IAM as the Identity Provider](images/db-procedure.png)
 
     SELECT NAME, VALUE FROM V$PARAMETER WHERE NAME=‘identity_provider_type’;
 
-     ![Verify the External Identity Provider](images/manager-ag-homepage.png)
+     ![Verify the External Identity Provider](images/identity-provider-after.png)
 
     It is currently set to **OCI_IAM** 
 
@@ -138,7 +160,7 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
     grant CREATE SESSION to global_role;
     GRANT DWROLE TO global_role;
 
-     ![Configure database schema role mapping](images/manager-ag-homepage.png)
+     ![Configure database schema role mapping](images/sql-queries.png)
 
 
 ## Task 5: Download the SQL*Plus Database Client
@@ -156,7 +178,10 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
 2. Enter a password and download the wallet.
 
-   ![Download Wallet](images/manager-ag-homepage.png)
+   ![Download Wallet](images/download-wallet.png)
+
+   ![Download Wallet](images/password-wallet.png)
+
 
 
 ## Task 7: Update the Wallet location in sqlnet.ora and set the TNS Admin variable
@@ -177,7 +202,6 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     exit 
 
-     ![Connected as Admin User](images/manager-ag-homepage.png)
 
     Now you are successfully connected to the **Autonomous Database** as the **Administrator**
 
@@ -196,7 +220,7 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     exit
 
-     ![Connected as testuser1](images/manager-ag-homepage.png)
+     ![Connected as testuser1](images/testuser1-connect.png)
 
     Now you haved  successfully tested the connection to the **Autonomous Database** as the **testuser1**
 
@@ -214,7 +238,7 @@ You can configure Autonomous Database to use Oracle Cloud Infrastructure Identit
 
     exit 
 
-     ![Connected as testuser2](images/manager-ag-homepage.png)
+     ![Connected as testuser2](images/testuser2-connect.png)
 
      Now you haved  successfully tested the connection to the **Autonomous Database** as the **testuser2**
 
